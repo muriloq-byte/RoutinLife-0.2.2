@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:minHeight="60dp"
+    android:orientation="horizontal"
+    android:paddingStart="8dp"
+    android:paddingEnd="8dp">
+
+    <FrameLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.85">
+
+        <TextView
+            android:id="@+id/textTime"
+            style="@style/RoutineCell.Time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start|center_vertical"
+            tools:text="09:00" />
+    </FrameLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1.6"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/textTitle"
+            style="@style/RoutineCell"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:text="Estudos" />
+
+        <TextView
+            android:id="@+id/textWarning"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="8dp"
+            android:textAppearance="?attr/textAppearanceLabelSmall"
+            android:textColor="@color/warning"
+            android:visibility="gone"
+            tools:text="mesmo horário — os alarmes tocam juntos"
+            tools:visibility="visible" />
+    </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.8">
+
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/switchAlarm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center" />
+    </FrameLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.95"
+        android:gravity="end|center_vertical"
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:id="@+id/buttonEdit"
+            style="@style/RoutineIconButton"
+            android:contentDescription="@string/my_edit_button_description"
+            android:src="@drawable/ic_edit" />
+
+        <ImageButton
+            android:id="@+id/buttonDelete"
+            style="@style/RoutineIconButton"
+            android:contentDescription="@string/my_delete_button_description"
+            android:src="@drawable/ic_delete" />
+    </LinearLayout>
+</LinearLayout>
