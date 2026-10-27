@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <style name="Theme.RoutinLife" parent="Theme.Material3.Light.NoActionBar">
+        <item name="colorPrimary">@color/pizza_red</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorPrimaryContainer">@color/pizza_red_light</item>
+        <item name="colorOnPrimaryContainer">@color/ink</item>
+        <item name="colorSecondary">@color/teal</item>
+        <item name="colorOnSecondary">@color/white</item>
+        <item name="colorSurface">@color/surface</item>
+        <item name="colorOnSurface">@color/ink</item>
+        <item name="colorOnSurfaceVariant">@color/ink_muted</item>
+        <item name="colorOutline">@color/outline</item>
+        <item name="android:colorBackground">@color/cream</item>
+        <item name="android:statusBarColor">@color/cream</item>
+        <item name="android:navigationBarColor">@color/cream</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
+    </style>
+
+    <!-- Tela cheia do alarme: fundo escuro para chamar atenção, inclusive sobre a tela de bloqueio. -->
+    <style name="Theme.RoutinLife.Alarm" parent="Theme.RoutinLife">
+        <item name="android:windowBackground">@color/ink</item>
+        <item name="android:statusBarColor">@color/ink</item>
+        <item name="android:navigationBarColor">@color/ink</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="m">false</item>
+        <item name="colorOnSurface">@color/white</item>
+        <item name="colorOnSurfaceVariant">#CCFFFFFF</item>
+    </style>
+
+    <!-- Células da "planilha" da rotina -->
+    <style name="RoutineCell">
+        <item name="android:textAppearance">?attr/textAppearanceBodyLarge</item>
+        <item name="android:textColor">@color/ink</item>
+        <item name="android:paddingTop">10dp</item>
+        <item name="android:paddingBottom">10dp</item>
+        <item name="android:maxLines">2</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+
+    <style name="RoutineCell.Header">
+        <item name="android:textAppearance">?attr/textAppearanceLabelLarge</item>
+        <item name="android:textColor">@color/ink_muted</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:paddingTop">12dp</item>
+        <item name="android:paddingBottom">12dp</item>
+    </style>
+
+    <style name="RoutineCell.Time">
+        <item name="android:textAppearance">?attr/textAppearanceTitleMedium</item>
+        <item name="android:fontFamily">monospace</item>
+    </style>
+
+    <style name="RoutineIconButton">
+        <item name="android:layout_width">36dp</item>
+        <item name="android:layout_height">36dp</item>
+        <item name="android:padding">6dp</item>
+        <item name="android:background">?attr/selectableItemBackgroundBorderless</item>
+        <item name="android:tint">@color/ink_muted</item>
+    </style>
+</resources>

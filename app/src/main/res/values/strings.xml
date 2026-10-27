@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">RoutinLife</string>
+
+    <!-- Navegação -->
+    <string name="tab_build">Montar Rotina</string>
+    <string name="tab_my">Minha Rotina</string>
+
+    <!-- Aba Montar Rotina -->
+    <string name="build_title">Montar Rotina</string>
+    <string name="build_subtitle">Escolha o horário, escreva o nome da atividade e o alarme já fica agendado. A rotina se repete automaticamente todos os dias.</string>
+    <string name="build_card_title">Nova atividade</string>
+    <string name="build_time_label">Horário do alarme</string>
+    <string name="build_name_hint">Nome da atividade (ex.: Estudos)</string>
+    <string name="build_add_button">Adicionar e agendar alarme</string>
+    <string name="build_current_title">Rotina cadastrada</string>
+    <string name="build_current_empty">Nenhuma atividade cadastrada ainda.\nCrie a primeira acima — o alarme é agendado na hora.</string>
+    <string name="build_disabled_marker">(alarme desativado)</string>
+    <string name="build_added_success">Alarme agendado para %1$s</string>
+    <string name="build_added_duplicate_success">Alarme agendado para %1$s — toca junto com o outro item</string>
+    <string name="build_error_empty_name">Digite o nome da atividade</string>
+    <string name="build_time_picker_title">Escolha o horário</string>
+    <string name="build_time_picker_confirm">OK</string>
+
+    <!-- Aba Minha Rotina -->
+    <string name="my_title">Minha Rotina</string>
+    <string name="my_subtitle">Tudo em ordem cronológica. Ative ou desative o alarme de cada item sem apagar a atividade.</string>
+    <string name="my_header_time">Horário</string>
+    <string name="my_header_activity">Atividade</string>
+    <string name="my_header_alarm">Alarme</string>
+    <string name="my_header_actions">Ações</string>
+    <string name="my_empty">Sua rotina está vazia.\nUse a aba \"Montar Rotina\" para adicionar horários e atividades.</string>
+    <string name="my_same_time_warning">mesmo horário — os alarmes tocam juntos</string>
+    <string name="my_alarm_enabled">Alarme ativado para %1$s — %2$s</string>
+    <string name="my_alarm_disabled">Alarme desativado para %1$s. O item continua na rotina.</string>
+    <string name="my_delete_title">Excluir atividade</string>
+    <string name="my_delete_message">Excluir \"%1$s\" das %2$s? O alarme dessa atividade será cancelado.</string>
+    <string name="my_delete_confirm">Excluir</string>
+    <string name="my_deleted">\"%1$s\" foi excluída da rotina</string>
+    <string name="my_edit_title">Editar atividade</string>
+    <string name="my_updated">Atividade atualizada e alarme reagendado para %1$s</string>
+    <string name="my_edit_button_description">Editar atividade</string>
+    <string name="my_delete_button_description">Excluir atividade</string>
+    <string name="my_alarm_switch_description">Ativar ou desativar o alarme de %1$s</string>
+
+    <!-- Diálogo de horário repetido -->
+    <string name="duplicate_title">Já existe item nesse horário</string>
+    <string name="duplicate_message">Você já tem %1$d item(ns) às %2$s:\n%3$s\n\nSe continuar, os alarmes vão tocar ao mesmo tempo.</string>
+    <string name="duplicate_confirm">Adicionar mesmo assim</string>
+
+    <!-- Ações genéricas -->
+    <string name="action_save">Salvar</string>
+    <string name="action_cancel">Cancelar</string>
+    <string name="action_stop">PARAR</string>
+
+    <!-- Permissões -->
+    <string name="perm_notifications_title">Permitir notificações?</string>
+    <string name="perm_notifications_message">O RoutinLife usa notificações para avisar quando chega a hora de uma atividade e para mostrar os botões de parar o alarme.\n\nSem essa permissão o som ainda toca, mas você não vê o aviso na tela.\n\nPermitir notificações agora?</string>
+    <string name="perm_notifications_denied">Sem a permissão de notificações o RoutinLife não consegue mostrar o aviso do alarme. Você pode liberar depois em Configurações do Android › Apps › RoutinLife › Notificações.</string>
+    <string name="perm_exact_title">Permitir alarmes exatos?</string>
+    <string name="perm_exact_message">Para o alarme tocar no minuto certinho — mesmo com o app fechado e a tela bloqueada — o Android exige a permissão de \"alarmes e lembretes\".\n\nSem ela o sistema pode atrasar o alarme para economizar bateria.\n\nAbrir a tela de permissão agora?</string>
+    <string name="perm_exact_settings_denied">Não foi possível abrir a tela de permissão. Ative manualmente em Configurações do Android › Apps › RoutinLife › Alarmes e lembretes.</string>
+    <string name="perm_fsi_title">Permitir tela cheia do alarme?</string>
+    <string name="perm_fsi_message">No Android 14 e mais novos o aviso em tela cheia precisa de uma permissão extra para o RoutinLife abrir a tela do alarme por cima da tela de bloqueio.\n\nAbrir a configuração agora?</string>
+    <string name="perm_allow">Permitir</string>
+    <string name="perm_later">Agora não</string>
+    <string name="perm_all_set">Tudo pronto! Os alarmes vão tocar no horário exato.</string>
+    <string name="perm_card_title">Falta liberar permissões</string>
+    <string name="perm_card_message">O RoutinLife precisa de permissão de alarmes exatos e de notificações para tocar no horário certo e exibir o aviso.</string>
+    <string name="perm_card_button">Liberar agora</string>
+
+    <!-- Tela do alarme e notificação -->
+    <string name="alarm_screen_label">Alarme da sua rotina</string>
+    <string name="alarm_screen_hint">Toque em PARAR para silenciar. O som para sozinho depois de 1 minuto.</string>
+    <string name="notification_alarm_multiple">%1$d atividades agora</string>
+    <string name="channel_alarm_name">Alarmes da rotina</string>
+    <string name="channel_alarm_desc">Som e vibração quando chega a hora de uma atividade da sua rotina.</string>
+    <string name="channel_service_name">Alarme em andamento</string>
+    <string name="channel_service_desc">Aviso enquanto o alarme está tocando.</string>
+</resources>

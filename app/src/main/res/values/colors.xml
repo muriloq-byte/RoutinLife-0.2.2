@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="white">#FFFFFFFF</color>
+
+    <!-- Paleta inspirada no ícone (pizza cartunesca + traço preto sobre fundo claro) -->
+    <color name="pizza_red">#D9481F</color>
+    <color name="pizza_red_light">#FFDCCF</color>
+    <color name="cream">#FFFBF3</color>
+    <color name="surface">#FFFFFFFF</color>
+    <color name="surface_alt">#FBF7F0</color>
+    <color name="ink">#1C1917</color>
+    <color name="ink_muted">#6B6660</color>
+    <color name="outline">#D9D2C7</color>
+    <color name="row_divider">#E7E1D6</color>
+    <color name="teal">#157A6E</color>
+    <color name="warning">#B45309</color>
+
+    <!-- Fundo do ícone adaptativo -->
+    <color name="icon_background">#FFF7E8</color>
+</resources>
