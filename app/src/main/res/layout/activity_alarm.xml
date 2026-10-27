@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/ink"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="24dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:letterSpacing="0.12"
+        android:text="@string/alarm_screen_label"
+        android:textAllCaps="true"
+        android:textAppearance="?attr/textAppearanceLabelLarge"
+        android:textColor="#CCFFFFFF" />
+
+    <TextView
+        android:id="@+id/textAlarmTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:fontFamily="monospace"
+        android:textColor="@color/white"
+        android:textSize="64sp"
+        android:textStyle="bold"
+        tools:text="09:00" />
+
+    <TextView
+        android:id="@+id/textAlarmTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:gravity="center"
+        android:textAppearance="?attr/textAppearanceHeadlineSmall"
+        android:textColor="@color/white"
+        tools:text="Estudos" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:gravity="center"
+        android:text="@string/alarm_screen_hint"
+        android:textAppearance="?attr/textAppearanceBodySmall"
+        android:textColor="#CCFFFFFF" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/buttonStop"
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:layout_marginTop="32dp"
+        android:text="@string/action_stop"
+        android:textSize="20sp"
+        app:backgroundTint="@color/pizza_red" />
+</LinearLayout>
