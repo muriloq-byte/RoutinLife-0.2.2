@@ -1,36 +1,51 @@
-# RoutinLife 0.2.2
+# RoutinLife 0.3.0
 
-Aplicativo Android que funciona como **organizador de rotina diária com alarmes**. O usuário
-monta a rotina (horário + nome da atividade) e o app toca um alarme sonoro em cada horário,
-inclusive com o **app fechado** e com a **tela bloqueada**. No dia seguinte a rotina se repete
-automaticamente.
+Aplicativo Android que funciona como **organizador de rotina SEMANAL com alarmes**. Cada dia
+da semana (Segunda ... Domingo) tem o **seu próprio conjunto de rotinas**: o usuário monta as
+atividades de cada dia (horário + nome) e o app toca um alarme sonoro no horário de cada uma,
+inclusive com o **app fechado** e com a **tela bloqueada**. Ao chegar na mesma semana
+seguinte, a rotina de cada dia se repete automaticamente.
 
 ![Ícone do RoutinLife](docs/icon.svg)
 
-Exemplo de rotina suportada pelo app:
+Exemplo de semana suportada pelo app — listas distintas, um exemplo por dia:
 
-| Horário | Atividade |
-|---------|-----------|
-| 09:00   | Estudos   |
-| 12:00   | Almoço    |
-| 14:00   | Academia  |
-| 17:00   | Cochilo   |
-| 19:00   | Estudos   |
-| 21:00   | Dormir    |
+| Segunda-feira | Terça-feira |
+|---------------|-------------|
+| 09:00 Estudos | 10:00 Estudos |
+| 12:00 Almoço  | 14:00 Academia |
+| 14:00 Academia| 19:00 Trabalho |
+| 21:00 Dormir  | 21:00 Dormir |
 
-## As duas abas
+O que mudou em relação ao 0.2.x (rotina única repetida todo dia): os dados agora são
+**agrupados por dia da semana**, cada dia com lista, alarmes e conclusões próprios. Os itens já
+salvos são **migrados automaticamente** para os 7 dias na primeira abertura (ver
+[Migração dos dados](#migração-dos-dados-da-versão-diária-02x)).
 
-1. **Montar Rotina** — seletor de hora/minuto (24h), campo de nome da atividade e o botão
-   *Adicionar e agendar alarme*. Cada item criado **já sai com o alarme agendado**.
-2. **Minha Rotina** — a rotina em formato de planilha (Horário | Atividade | Alarme | Ações),
-   em ordem cronológica, com **editar** (horário e nome), **excluir** e **ativar/desativar o
-   alarme de cada item sem apagar o item**. Reativar volta a agendar o alarme.
+## As duas abas e os chips da semana
 
-Tratamento de **dois itens no mesmo horário**: ao tentar salvar (ou editar para) um horário já
-ocupado, o app mostra um diálogo informando quais itens já existem naquele horário e avisa que
-os alarmes vão tocar juntos; o usuário decide entre *Adicionar mesmo assim* ou *Cancelar*. A
-linha duplicada também aparece marcada na planilha (`mesmo horário — os alarmes tocam juntos`) e,
-quando os alarmes disparam juntos, o serviço agrupa os dois em um único aviso com um só som.
+As duas telas começam com a **faixa da semana** (Seg Ter Qua Qui Sex Sáb Dom): os chips têm
+seleção única e o dia escolhido é **compartilhado entre as abas** — montar em segunda e
+conferir em segunda mostram o mesmo dia. O app abre em **hoje**.
+
+1. **Montar Rotina** — dia (chips) + seletor de hora/minuto (24h) + nome da atividade + botão
+   *Adicionar e agendar alarme*. O item nasce no **dia selecionado** e **já sai com o alarme
+   agendado** para a próxima ocorrência daquele dia da semana.
+2. **Minha Rotina** — a rotina do dia selecionado em formato de planilha
+   (Horário | Atividade | Feito | Alarme | Ações), com **editar** (horário e nome), **excluir**,
+   **ativar/desativar o alarme** sem apagar o item, **marcar como concluída** (✓ riscado, preso
+   àquele dia/data) e **reordenar** segurando a linha e arrastando para cima/baixo.
+
+Cada dia é uma lista **independente**: editar, excluir, concluir ou reordenar um item de
+Segunda-feira não toca em nada de Terça-feira, e o estado de conclusão de segunda não aparece
+em terça nem na segunda da semana seguinte.
+
+Tratamento de **dois itens no mesmo horário**: dentro do mesmo dia, ao tentar salvar (ou editar
+para) um horário já ocupado, o app mostra um diálogo informando quais itens já existem naquele
+horário e avisa que os alarmes vão tocar juntos; o usuário decide entre *Adicionar mesmo assim*
+ou *Cancelar*. A linha duplicada também aparece marcada na planilha (`mesmo horário — os alarmes
+tocam juntos`) e, quando os alarmes disparam juntos, o serviço agrupa os dois em um único aviso
+com um só som.
 
 ## Como compilar o APK
 
@@ -64,13 +79,42 @@ adb install -r app/build/outputs/apk/debug/app-debug.apk
 ```
 
 Ou copie o `.apk` para o celular e abra (é preciso permitir "instalar apps de fontes
-desconhecidas"). O APK de teste já compilado é entregue junto com o projeto (`RoutinLife-0.2.2-debug.apk`).
+desconhecidas"). O APK de teste já compilado é entregue junto com o projeto
+(`RoutinLife-0.3.0-debug.apk`).
+
+### Gerando a release no GitHub (CI)
+
+O workflow [`.github/workflows/build-apk.yml`](.github/workflows/build-apk.yml) (GitHub
+Actions) compila o `main` com JDK 17 + SDK 34 + Gradle 8.7 e publica o APK como asset da
+release **v0.3.0**, com link público de download:
+
+```
+https://github.com/muriloq-byte/RoutinLife-0.2.2/releases/download/v0.3.0/RoutinLife-0.3.0-debug.apk
+```
+
+Para regerar: **Actions → "Gerar APK" → Run workflow** (o build precisa passar antes do upload).
+Localmente o equivalente é `gradle assembleDebug`.
 
 ### APK de release assinado
 
+O `assembleRelease` gera um APK **não assinado**; para distribuir (loja ou fora dela), gere uma
+chave e assine:
+
 ```bash
+# 1) chave (uma vez só)
 keytool -genkeypair -v -keystore routinlife.jks -alias routinlife \
         -keyalg RSA -keysize 2048 -validity 10000
+
+# 2) build de release
+gradle assembleRelease        # -> app/build/outputs/apk/release/app-release-unsigned.apk
+
+# 3) assinar (build-tools do SDK)
+$ANDROID_HOME/build-tools/34.0.0/apksigner sign \
+        --ks routinlife.jks --ks-key-alias routinlife \
+        --out app/build/outputs/apk/release/RoutinLife-0.3.0-release.apk \
+        app/build/outputs/apk/release/app-release-unsigned.apk
+$ANDROID_HOME/build-tools/34.0.0/apksigner verify \
+        app/build/outputs/apk/release/RoutinLife-0.3.0-release.apk
 ```
 
 Depois adicione em `app/build.gradle`:
@@ -125,11 +169,13 @@ de aviso na aba *Minha Rotina* com o botão *Liberar agora*, que leva direto à 
 ### Alarmes
 
 - **`AlarmManager` + um `PendingIntent` por item** (`requestCode` derivado do id do item, ação
-  própria). Isso permite cancelar, reagendar e desativar item por item sem afetar os outros.
-- **Rotina diária sem `setRepeating`**: no Android 4.4+ alarmes repetitivos deixam de ser exatos.
-  O app agenda sempre a **próxima ocorrência exata** (`setExactAndAllowWhileIdle`) e, no momento
-  em que o alarme toca, o `AlarmReceiver` **reagenda o dia seguinte antes de tocar**. Se o
-  processo morrer no meio, a rotina já está agendada para amanhã.
+  própria). Isso permite cancelar, reagendar e desativar item por item sem afetar os outros —
+  inclusive sem afetar os itens de outros dias.
+- **Rotina semanal sem `setRepeating`**: no Android 4.4+ alarmes repetitivos deixam de ser
+  exatos. O app agenda sempre a **próxima ocorrência exata do DIA da semana do item**
+  (`WeekDays.nextTriggerMillis`: o próximo dia igual cujo horário ainda não passou) com
+  `setExactAndAllowWhileIdle` e, no momento em que o alarme toca, o `AlarmReceiver` **reagenda
+  a semana seguinte antes de tocar**. Se o processo morrer no meio, a rotina já está agendada.
 - **Degraus de exatidão**: `setExactAndAllowWhileIdle` (quando há permissão de alarme exato) →
   `setAlarmClock` (exato e não depende da permissão; aparece o ícone de alarme na barra de
   status) → `set()` (último recurso, pode atrasar). Assim o alarme nunca deixa de existir por
@@ -154,9 +200,35 @@ de aviso na aba *Minha Rotina* com o botão *Liberar agora*, que leva direto à 
   uma lista curtíssima de itens simples; JSON evita Room/migrations/dependências de anotação e
   mantém o app leve. A gravação é *write-through* (a lista inteira é reescrita a cada mudança) e
   a leitura é tolerante a dados corrompidos (devolve lista vazia em vez de quebrar o app).
+- **Modelo por dia** — cada item carrega:
+  - `day` (1–7, constantes de `Calendar`): o dia a que pertence; itens de dias diferentes são
+    registros independentes;
+  - `order`: posição da linha dentro do dia (nasce cronológica, o usuário pode arrastar);
+  - `doneDate` (yyyy-MM-dd ou ausente): a **data** em que foi marcado como concluído — guardar a
+    data e não um booleano mantém a conclusão presa ao dia certo.
 - **`RoutineRepository`** expõe a lista como `LiveData`, então as duas abas se atualizam sozinhas
-  depois de adicionar/editar/excluir/ativar, e as telas de alarme usam acesso direto (sem UI).
+  depois de adicionar/editar/reordenar/concluir/excluir/ativar, e as telas de alarme usam acesso
+  direto (sem UI). Cada tela filtra o dia exibido com `WeekDays.forDay`, o único ponto de
+  filtragem — é isso que garante que dois dias nunca compartilhem lista.
 - A persistência é **local**: nada é enviado para servidores.
+
+### Migração dos dados da versão diária (0.2.x)
+
+O formato antigo gravava uma lista única sem campo de dia (`{id, hour, minute, title,
+enabled}`). Na **primeira leitura** após a atualização, `RoutineStore.load()` detecta itens sem
+`day` e chama `RoutineMigration.expandLegacy`, que:
+
+1. **copia cada item antigo para os 7 dias da semana** — coerente com o app antigo, em que a
+   rotina se repetia todo dia: o usuário continua com os mesmos alarmes em todos os dias e
+   passa a editar cada dia de forma independente;
+2. gera **ids únicos** por cópia (`original * 10 + índice`), sem depender de relógio (o formato
+   antigo usava `System.currentTimeMillis()`, que empilharia as 7 cópias no mesmo milissegundo);
+3. atribui a **ordem cronológica** das linhas em cada dia e deixa tudo não concluído;
+4. **regrava o arquivo** com os campos novos (`day`, `order`) — a migração roda **uma única
+   vez** e é idempotente (as próximas leituras já veem `day` e não migram de novo).
+
+Itens que já fossem semânticos do formato novo (`day` presente) são preservados sem reordenação.
+O que não puder ser lido cai no tratamento de dados corrompidos (lista vazia), como antes.
 
 ### Interface
 
@@ -172,12 +244,14 @@ de aviso na aba *Minha Rotina* com o botão *Liberar agora*, que leva direto à 
 app/src/main/java/com/routinlife/app/
 ├── RoutinLifeApp.kt              # Application: armazenamento, canais e reagendamento
 ├── data/
-│   ├── RoutineItem.kt            # modelo (id, hora, minuto, título, ativo)
+│   ├── RoutineItem.kt            # modelo (id, hora, minuto, título, ativo, dia, ordem, conclusão)
+│   ├── WeekDays.kt               # núcleo semanal: dias, data e próximo disparo
+│   ├── RoutineMigration.kt       # migração 0.2.x (rotina única) -> 7 dias
 │   ├── RoutineStore.kt           # SharedPreferences + JSON
 │   └── RoutineRepository.kt      # acesso + LiveData
 ├── alarm/
-│   ├── AlarmScheduler.kt         # agendamento/cancelamento e próxima ocorrência
-│   ├── AlarmReceiver.kt          # disparo: reagenda amanhã + inicia o serviço
+│   ├── AlarmScheduler.kt         # agendamento/cancelamento e próxima ocorrência do dia
+│   ├── AlarmReceiver.kt          # disparo: reagenda a semana + inicia o serviço
 │   ├── BootReceiver.kt           # reagenda no boot / troca de horário / atualização
 │   ├── AlarmService.kt           # serviço em primeiro plano com som e vibração em loop
 │   ├── AlarmNotifier.kt          # canais e notificação de alarme (tela cheia + PARAR)
@@ -186,7 +260,8 @@ app/src/main/java/com/routinlife/app/
     ├── MainActivity.kt           # abas + fluxo de permissões explicado
     ├── MontarRotinaFragment.kt   # aba 1
     ├── MinhaRotinaFragment.kt    # aba 2
-    ├── RoutineAdapter.kt         # linhas da planilha
+    ├── RoutineAdapter.kt         # linhas da planilha (conclusão, alarme, arraste)
+    ├── DayChips.kt               # chips da semana compartilhados pelas duas abas
     └── TimeFormat.kt             # formatação hh:mm
 ```
 
@@ -222,7 +297,7 @@ python3 tools/generate_vector_icons.py
 | compileSdk / targetSdk | 34 (Android 14) |
 | minSdk | 24 (Android 7.0) |
 | Material Components | 1.12.0 |
-| versionName / versionCode | 0.2.2 / 3 |
+| versionName / versionCode | 0.3.0 / 4 |
 
 ## Limitações conhecidas
 
@@ -233,13 +308,18 @@ python3 tools/generate_vector_icons.py
   desta versão.
 - O APK entregue é de **debug** (assinado com a chave de debug), adequado para instalar e
   testar; para distribuir, gere um release assinado como descrito acima.
-- Nesta versão não há snooze, nem rotinas por dia da semana: a rotina é a mesma todos os dias,
-  como especificado.
+- Nesta versão não há snooze. A rotina é **semanal**: cada dia da semana tem a sua própria
+  lista, com alarmes e conclusões independentes.
 
 ## Estado de verificação
 
-- `./gradlew assembleDebug` **compila com sucesso** (APK gerado em
+- `gradle assembleDebug` **compila com sucesso** (APK gerado em
   `app/build/outputs/apk/debug/app-debug.apk`).
+- `gradle test` **passa**: 11 testes de JVM em `app/src/test/.../WeeklyLogicTest.kt` cobrem
+  isolamento entre dias, ordem das linhas, data de conclusão, próximo disparo de cada dia e a
+  migração 0.2.x → 7 dias (incluindo idempotência).
+- O workflow do GitHub Actions compila e roda os testes a cada execução, e só publica o APK
+  depois que ambos passam.
 - O app **não foi executado em um aparelho/emulador** neste ambiente (sem emulador disponível):
   os fluxos de alarme (disparo real, tela de bloqueio, reagendamento no boot) precisam ser
   validados em um celular real.
