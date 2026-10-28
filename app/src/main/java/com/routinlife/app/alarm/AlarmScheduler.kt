@@ -7,7 +7,7 @@ import android.content.Intent
 import android.os.Build
 import com.routinlife.app.data.RoutineItem
 import com.routinlife.app.data.RoutineRepository
-import java.util.Calendar
+import com.routinlife.app.data.WeekDays
 
 /**
  * Agenda os alarmes no AlarmManager.
@@ -15,10 +15,12 @@ import java.util.Calendar
  * Decisão de arquitetura:
  * - Um PendingIntent por item (requestCode derivado do id), com ação própria, para poder
  *   cancelar/reagendar item por item sem afetar os outros.
- * - Alarmes NÃO são repetitivos do tipo setRepeating (no Android 4.4+ eles deixam de ser
- *   exatos). Em vez disso, agendamos sempre a PRÓXIMA ocorrência exata e o próprio
- *   AlarmReceiver reagenda o dia seguinte assim que o alarme toca. Assim a rotina é
- *   diária, sobrevive a mudanças de horário do aparelho e nunca fica "presa" no passado.
+ * - Rotina SEMANAL: cada item pertence a um dia da semana, então a próxima ocorrência é o
+ *   próximo DESSE dia no horário do item (WeekDays.nextTriggerMillis). Alarmes NÃO são
+ *   repetitivos do tipo setRepeating (no Android 4.4+ eles deixam de ser exatos). Em vez
+ *   disso, agendamos sempre a PRÓXIMA ocorrência exata e o próprio AlarmReceiver reagenda
+ *   a semana seguinte assim que o alarme toca — assim a rotina se repete toda semana,
+ *   sobrevive a mudanças de horário do aparelho e nunca fica "presa" no passado.
  * - setExactAndAllowWhileIdle quando o app tem permissão de alarme exato; setAlarmClock como
  *   primeira alternativa (é exato e não depende da permissão) e set() como último recurso.
  */
@@ -73,20 +75,13 @@ object AlarmScheduler {
         pendingIntent.cancel()
     }
 
-    /** Próxima ocorrência do horário do item: hoje se ainda não passou, senão amanhã. */
-    fun nextTriggerMillis(item: RoutineItem, from: Long = System.currentTimeMillis()): Long {
-        val calendar = Calendar.getInstance().apply {
-            timeInMillis = from
-            set(Calendar.HOUR_OF_DAY, item.hour)
-            set(Calendar.MINUTE, item.minute)
-            set(Calendar.SECOND, 0)
-            set(Calendar.MILLISECOND, 0)
-        }
-        if (calendar.timeInMillis <= from) {
-            calendar.add(Calendar.DAY_OF_YEAR, 1)
-        }
-        return calendar.timeInMillis
-    }
+    /**
+     * Próxima ocorrência do item: o próximo dia da SEMANA dele cujo horário ainda não
+     * passou (hoje, se for o dia e ainda faltar; senão a próxima ocorrência daquele dia).
+     * A computação pura mora em WeekDays para ser testável na JVM.
+     */
+    fun nextTriggerMillis(item: RoutineItem, from: Long = System.currentTimeMillis()): Long =
+        WeekDays.nextTriggerMillis(item.day, item.hour, item.minute, from)
 
     fun canScheduleExact(manager: AlarmManager): Boolean =
         Build.VERSION.SDK_INT < Build.VERSION_CODES.S || manager.canScheduleExactAlarms()
