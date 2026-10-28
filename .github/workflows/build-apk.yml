@@ -1,7 +1,7 @@
 name: Gerar APK
 
-# Compila o RoutinLife no GitHub e publica o APK como asset da release v0.2.2,
-# gerando um link público de download (releases/download/v0.2.2/...).
+# Compila e testa o RoutinLife no GitHub e publica o APK como asset da release v0.3.0,
+# gerando um link público de download (releases/download/v0.3.0/...).
 on:
   workflow_dispatch:
 
@@ -40,22 +40,25 @@ jobs:
           unzip -q "$RUNNER_TEMP/gradle.zip" -d "$RUNNER_TEMP"
           echo "$RUNNER_TEMP/gradle-8.7/bin" >> "$GITHUB_PATH"
 
+      - name: Rodar os testes da lógica semanal
+        run: gradle test --no-daemon --stacktrace
+
       - name: Compilar APK de teste
         run: gradle assembleDebug --no-daemon --stacktrace
 
-      - name: Publicar o APK na release v0.2.2
+      - name: Publicar o APK na release v0.3.0
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           set -eu
           APK="app/build/outputs/apk/debug/app-debug.apk"
-          DEST="$RUNNER_TEMP/RoutinLife-0.2.2-debug.apk"
+          DEST="$RUNNER_TEMP/RoutinLife-0.3.0-debug.apk"
           cp "$APK" "$DEST"
           ls -la "$DEST"
-          if ! gh release view v0.2.2 --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
-            gh release create v0.2.2 --repo "$GITHUB_REPOSITORY" \
-              --title "RoutinLife 0.2.2" \
-              --notes "APK de teste (debug) compilado automaticamente pelo GitHub Actions a partir de \`main\`." \
+          if ! gh release view v0.3.0 --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            gh release create v0.3.0 --repo "$GITHUB_REPOSITORY" \
+              --title "RoutinLife 0.3.0 — rotina semanal" \
+              --notes "Rotina organizada por dia da semana: cada dia (Segunda ... Domingo) tem a sua própria lista, com alarmes e conclusões independentes. Os dados da versão anterior são migrados automaticamente para os 7 dias. APK de teste (debug) compilado e testado automaticamente pelo GitHub Actions a partir de \`main\`." \
               --latest
           fi
-          gh release upload v0.2.2 "$DEST" --repo "$GITHUB_REPOSITORY" --clobber
+          gh release upload v0.3.0 "$DEST" --repo "$GITHUB_REPOSITORY" --clobber
