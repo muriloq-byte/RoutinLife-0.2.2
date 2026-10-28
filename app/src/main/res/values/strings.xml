@@ -6,30 +6,49 @@
     <string name="tab_build">Montar Rotina</string>
     <string name="tab_my">Minha Rotina</string>
 
+    <!-- Dias da semana -->
+    <string name="week_label">Semana</string>
+    <string name="day_monday">Segunda-feira</string>
+    <string name="day_tuesday">Terça-feira</string>
+    <string name="day_wednesday">Quarta-feira</string>
+    <string name="day_thursday">Quinta-feira</string>
+    <string name="day_friday">Sexta-feira</string>
+    <string name="day_saturday">Sábado</string>
+    <string name="day_sunday">Domingo</string>
+    <string name="day_short_monday">Seg</string>
+    <string name="day_short_tuesday">Ter</string>
+    <string name="day_short_wednesday">Qua</string>
+    <string name="day_short_thursday">Qui</string>
+    <string name="day_short_friday">Sex</string>
+    <string name="day_short_saturday">Sáb</string>
+    <string name="day_short_sunday">Dom</string>
+
     <!-- Aba Montar Rotina -->
     <string name="build_title">Montar Rotina</string>
-    <string name="build_subtitle">Escolha o horário, escreva o nome da atividade e o alarme já fica agendado. A rotina se repete automaticamente todos os dias.</string>
+    <string name="build_subtitle">Escolha o dia da semana nos chips acima, o horário e o nome da atividade. O alarme já fica agendado para aquele dia e se repete toda semana.</string>
     <string name="build_card_title">Nova atividade</string>
     <string name="build_time_label">Horário do alarme</string>
     <string name="build_name_hint">Nome da atividade (ex.: Estudos)</string>
     <string name="build_add_button">Adicionar e agendar alarme</string>
-    <string name="build_current_title">Rotina cadastrada</string>
-    <string name="build_current_empty">Nenhuma atividade cadastrada ainda.\nCrie a primeira acima — o alarme é agendado na hora.</string>
+    <string name="build_current_title">Rotina de %1$s</string>
+    <string name="build_current_empty_day">Nenhuma atividade em %1$s.\nCrie a primeira acima — o alarme é agendado na hora.</string>
     <string name="build_disabled_marker">(alarme desativado)</string>
-    <string name="build_added_success">Alarme agendado para %1$s</string>
-    <string name="build_added_duplicate_success">Alarme agendado para %1$s — toca junto com o outro item</string>
+    <string name="build_done_marker">(feito)</string>
+    <string name="build_added_success">Alarme agendado para %2$s às %1$s</string>
+    <string name="build_added_duplicate_success">Alarme agendado para %2$s às %1$s — toca junto com o outro item</string>
     <string name="build_error_empty_name">Digite o nome da atividade</string>
     <string name="build_time_picker_title">Escolha o horário</string>
     <string name="build_time_picker_confirm">OK</string>
 
     <!-- Aba Minha Rotina -->
     <string name="my_title">Minha Rotina</string>
-    <string name="my_subtitle">Tudo em ordem cronológica. Ative ou desative o alarme de cada item sem apagar a atividade.</string>
+    <string name="my_subtitle">Cada dia tem a sua própria lista. Ative ou desative o alarme, marque o que já fez e segure uma linha para arrastar e reordenar.</string>
     <string name="my_header_time">Horário</string>
     <string name="my_header_activity">Atividade</string>
     <string name="my_header_alarm">Alarme</string>
     <string name="my_header_actions">Ações</string>
-    <string name="my_empty">Sua rotina está vazia.\nUse a aba \"Montar Rotina\" para adicionar horários e atividades.</string>
+    <string name="my_header_done">Feito</string>
+    <string name="my_empty_day">Nenhuma atividade em %1$s.\nUse a aba \"Montar Rotina\" para adicionar horários e atividades.</string>
     <string name="my_same_time_warning">mesmo horário — os alarmes tocam juntos</string>
     <string name="my_alarm_enabled">Alarme ativado para %1$s — %2$s</string>
     <string name="my_alarm_disabled">Alarme desativado para %1$s. O item continua na rotina.</string>
@@ -42,6 +61,7 @@
     <string name="my_edit_button_description">Editar atividade</string>
     <string name="my_delete_button_description">Excluir atividade</string>
     <string name="my_alarm_switch_description">Ativar ou desativar o alarme de %1$s</string>
+    <string name="check_done_description">Marcar %1$s como concluída</string>
 
     <!-- Diálogo de horário repetido -->
     <string name="duplicate_title">Já existe item nesse horário</string>
