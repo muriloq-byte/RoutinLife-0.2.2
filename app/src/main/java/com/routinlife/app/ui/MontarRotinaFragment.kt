@@ -13,10 +13,14 @@ import com.routinlife.app.R
 import com.routinlife.app.alarm.AlarmScheduler
 import com.routinlife.app.data.RoutineItem
 import com.routinlife.app.data.RoutineRepository
+import com.routinlife.app.data.WeekDays
 import com.routinlife.app.databinding.FragmentMontarRotinaBinding
 import java.util.Calendar
 
-/** Aba 1: escolher horário + nome da atividade. Cada item criado já sai com o alarme agendado. */
+/**
+ * Aba 1: escolher DIA da semana + horário + nome da atividade. Cada item criado já sai com
+ * o alarme agendado para o dia escolhido nos chips da semana (e repetindo toda semana).
+ */
 class MontarRotinaFragment : Fragment() {
 
     private var _binding: FragmentMontarRotinaBinding? = null
@@ -24,6 +28,8 @@ class MontarRotinaFragment : Fragment() {
 
     private var selectedHour = 8
     private var selectedMinute = 0
+    private var selectedDay = WeekDays.currentDay()
+    private var lastItems: List<RoutineItem> = emptyList()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -38,6 +44,9 @@ class MontarRotinaFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         RoutineRepository.init(requireContext())
 
+        selectedDay = (activity as? MainActivity)?.selectedDay ?: WeekDays.currentDay()
+        DayChips.bind(binding.chipDays, selectedDay) { day -> onDayChanged(day) }
+
         val now = Calendar.getInstance()
         var hour = now.get(Calendar.HOUR_OF_DAY)
         var minute = if (now.get(Calendar.MINUTE) < 30) 30 else 0
@@ -50,7 +59,17 @@ class MontarRotinaFragment : Fragment() {
         updateTimeLabel()
         binding.buttonTime.setOnClickListener { showTimePicker() }
         binding.buttonAdd.setOnClickListener { addItem() }
-        RoutineRepository.items.observe(viewLifecycleOwner) { renderSchedule(it) }
+        RoutineRepository.items.observe(viewLifecycleOwner) {
+            lastItems = it
+            renderSchedule()
+        }
+    }
+
+    /** Dia trocado nos chips: re-renderiza a lista deste dia (os dados dos outros ficam guardados). */
+    private fun onDayChanged(day: Int) {
+        selectedDay = day
+        (activity as? MainActivity)?.selectedDay = day
+        renderSchedule()
     }
 
     override fun onDestroyView() {
@@ -85,7 +104,7 @@ class MontarRotinaFragment : Fragment() {
         }
         binding.inputLayoutTitle.error = null
 
-        val sameTime = RoutineRepository.itemsAtSameTime(selectedHour, selectedMinute)
+        val sameTime = RoutineRepository.itemsAtSameTime(selectedDay, selectedHour, selectedMinute)
         if (sameTime.isEmpty()) {
             saveItem(title, duplicate = false)
         } else {
@@ -94,13 +113,14 @@ class MontarRotinaFragment : Fragment() {
     }
 
     private fun saveItem(title: String, duplicate: Boolean) {
-        val item = RoutineRepository.add(title, selectedHour, selectedMinute)
+        val item = RoutineRepository.add(title, selectedHour, selectedMinute, selectedDay)
         AlarmScheduler.schedule(requireContext(), item)
 
         binding.inputTitle.text?.clear()
         val message = getString(
             if (duplicate) R.string.build_added_duplicate_success else R.string.build_added_success,
-            item.timeLabel
+            item.timeLabel,
+            getString(WeekDays.shortNameRes(item.day))
         )
         Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT).show()
     }
@@ -123,13 +143,19 @@ class MontarRotinaFragment : Fragment() {
             .show()
     }
 
-    private fun renderSchedule(items: List<RoutineItem>) {
+    /** Renderiza SOMENTE as rotinas do dia selecionado, na ordem das linhas do dia. */
+    private fun renderSchedule() {
+        val items = WeekDays.forDay(lastItems, selectedDay)
+        val dayName = getString(WeekDays.nameRes(selectedDay))
+        binding.textScheduleTitle.text = getString(R.string.build_current_title, dayName)
         val text = if (items.isEmpty()) {
-            getString(R.string.build_current_empty)
+            getString(R.string.build_current_empty_day, dayName)
         } else {
             items.joinToString(separator = "\n") { item ->
                 val marker = if (item.enabled) "" else "  ${getString(R.string.build_disabled_marker)}"
-                String.format("%-6s %s%s", item.timeLabel, item.title, marker)
+                val done = if (item.isDoneOn(WeekDays.dateOf(selectedDay)))
+                    "  ${getString(R.string.build_done_marker)}" else ""
+                String.format("%-6s %s%s%s", item.timeLabel, item.title, marker, done)
             }
         }
         binding.textSchedule.text = text

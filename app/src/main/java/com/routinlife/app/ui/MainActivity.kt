@@ -18,16 +18,25 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.routinlife.app.R
 import com.routinlife.app.alarm.AlarmNotifier
 import com.routinlife.app.data.RoutineRepository
+import com.routinlife.app.data.WeekDays
 import com.routinlife.app.databinding.ActivityMainBinding
 
 /**
- * Tela principal: duas abas ("Montar Rotina" e "Minha Rotina") e o fluxo de permissões
- * explicado ao usuário no primeiro uso.
+ * Tela principal: duas abas ("Montar Rotina" e "Minha Rotina"), a semana com os 7 dias
+ * (dia selecionado compartilhado entre as abas) e o fluxo de permissões explicado ao
+ * usuário no primeiro uso.
  */
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private var askExactAlarmAfterNotification = false
+
+    /**
+     * Dia da semana selecionado, compartilhado pelas duas abas: montar em segunda e
+     * conferir em segunda mostram o mesmo dia. Começa em hoje e sobrevive à rotação
+     * (restaurado de savedInstanceState antes de as abas criarem a view).
+     */
+    var selectedDay: Int = WeekDays.currentDay()
 
     private val notificationPermissionLauncher =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
@@ -47,6 +56,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        selectedDay = savedInstanceState?.getInt(KEY_SELECTED_DAY) ?: WeekDays.currentDay()
         RoutineRepository.init(this)
         AlarmNotifier.createChannels(this)
 
@@ -75,6 +85,11 @@ class MainActivity : AppCompatActivity() {
         }
 
         runOnboardingIfNeeded()
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putInt(KEY_SELECTED_DAY, selectedDay)
     }
 
     private fun showTab(tag: String) {
@@ -189,6 +204,7 @@ class MainActivity : AppCompatActivity() {
     private companion object {
         const val TAG_BUILD = "tab_build"
         const val TAG_MY = "tab_my"
+        const val KEY_SELECTED_DAY = "selected_week_day"
         const val PREFS_ONBOARDING = "routinlife_onboarding"
         const val KEY_ONBOARDING_DONE = "onboarding_done"
     }
